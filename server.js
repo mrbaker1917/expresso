@@ -16,8 +16,8 @@ if (!process.env.IS_TEST_ENV) {
 app.use(errorhandler());
 
 //import apiRouter
-//const apiRouter = require('./api/api.js');
-//app.use('/api', apiRouter);
+const apiRouter = require('./api/api.js');
+app.use('/api', apiRouter);
 
 app.listen(PORT, () => {
     console.log('Listening on port: ' + PORT);
