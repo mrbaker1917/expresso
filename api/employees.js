@@ -33,7 +33,7 @@ employeesRouter.get('/:employeeId', (req, res, next) => {
     res.status(200).json({employee: req.employee});
 });
 
-employeesRouter.post('/employees', (req, res, next) => {
+employeesRouter.post('/', (req, res, next) => {
     const name = req.body.employee.name;
     const position = req.body.employee.position;
     const wage = req.body.employee.wage;
@@ -52,7 +52,7 @@ employeesRouter.post('/employees', (req, res, next) => {
         $isCurrentEmployee: isCurrentEmployee
     };
 
-    db.run(sql, values, function(err0r) {
+    db.run(sql, values, function(error) {
         if (error) {
             next(error);
         } else {
