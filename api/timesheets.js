@@ -29,4 +29,40 @@ timesheetsRouter.get('/', (req, res, next) => {
     });
 });
 
+timesheetsRouter.post('/', (req, res, next) => {
+    const hours = req.body.timesheet.hours;
+    const rate = req.body.timesheet.rate;
+    const date = req.body.timesheet.date;
+    const employeeId = req.body.timesheet.employeeId;
+    const employeeSql = 'SELECT * FROM Employee WHERE Employee.id = $employeeId';
+    const employeeValues = {$employeeId: employeeId};
+    db.get(employeeSql, employeeValues, (error, employee) => {
+        if (error) {
+            next(error);
+        } else {
+            if (!hours || !rate || !date) {
+                return res.sendStatus(400);
+            }
+        };
+        const sql = 'INSERT INTO Timesheet (hours, rate, date, employee_id) ' +
+            'VALUES ($hours, $rate, $date, $employeeId)';
+        const values = {
+            $hours: hours,
+            $rate: rate,
+            $date: date,
+            $employeeId: employeeId
+        };
+        db.run(sql, values, function(error) {
+            if (error) {
+                next(error);
+            } else {
+                db.get(`SELECT * FROM Timesheet WHERE Timesheet.id = ${this.lastID}`,
+                (error, timesheet) => {
+                    res.status(201).json({timesheet: timesheet});
+                });
+            }
+        });
+    });
+});
+
 module.exports = timesheetsRouter;
