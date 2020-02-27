@@ -76,7 +76,7 @@ timesheetsRouter.put('/:timesheetId', (req, res, next) => {
         if (error) {
             next(error);
         } else {
-            if (!hours || !rate || !date) {
+            if (!hours || !rate || !date || !employee) {
                 return res.sendStatus(400);
             }
         };
@@ -87,7 +87,7 @@ timesheetsRouter.put('/:timesheetId', (req, res, next) => {
             $rate: rate,
             $date: date,
             $employeeId: employeeId,
-            $timesheetId: req.params.employeeId
+            $timesheetId: req.params.timesheetId
         };
         db.run(sql, values, function(error) {
             if (error) {
