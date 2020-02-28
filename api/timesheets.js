@@ -66,7 +66,6 @@ timesheetsRouter.post('/', (req, res, next) => {
 });
 
 timesheetsRouter.put('/:timesheetId', (req, res, next) => {
-    const timesheetId = req.body.timesheet.id;
     const hours = req.body.timesheet.hours;
     const rate = req.body.timesheet.rate;
     const date = req.body.timesheet.date;
@@ -77,17 +76,16 @@ timesheetsRouter.put('/:timesheetId', (req, res, next) => {
         if (error) {
             next(error);
         } else {
-            if (!timesheetId || !hours || !rate || !date || !employeeId) {
+            if (!hours || !rate || !date) {
                 return res.sendStatus(400);
             }
         };
-        const sql = 'UPDATE Timesheet SET hours = $hours, rate = $rate, date = $date, employee_id = $employeeId ' +
+        const sql = 'UPDATE Timesheet SET hours = $hours, rate = $rate, date = $date ' +
         'WHERE Timesheet.id = $timesheetId';
         const values = {
             $hours: hours,
             $rate: rate,
             $date: date,
-            $employeeId: employeeId,
             $timesheetId: req.params.timesheetId
         };
         db.run(sql, values, function(error) {
