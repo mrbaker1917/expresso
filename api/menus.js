@@ -26,8 +26,8 @@ menusRouter.post('/', (req, res, next) => {
             next(error);
         } else {
             db.get(`SELECT * FROM Menu WHERE Menu.id = ${this.lastID}`,
-            (error, menus) => {
-                res.status(201).json({menus: menus});
+            (error, menu) => {
+                res.status(201).json({menu: menu});
             })
         }
     });
