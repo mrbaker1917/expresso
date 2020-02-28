@@ -66,6 +66,7 @@ timesheetsRouter.post('/', (req, res, next) => {
 });
 
 timesheetsRouter.put('/:timesheetId', (req, res, next) => {
+    const timesheetId = req.body.timesheet.id;
     const hours = req.body.timesheet.hours;
     const rate = req.body.timesheet.rate;
     const date = req.body.timesheet.date;
@@ -76,7 +77,7 @@ timesheetsRouter.put('/:timesheetId', (req, res, next) => {
         if (error) {
             next(error);
         } else {
-            if (!hours || !rate || !date || !employee) {
+            if (!timesheetId || !hours || !rate || !date || !employeeId) {
                 return res.sendStatus(400);
             }
         };
