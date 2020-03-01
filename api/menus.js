@@ -74,15 +74,24 @@ menusRouter.put('/:menuId', (req, res, next) => {
     });
 });
 
-menusRouter.delete(':menuId', (req, res, next) => {
-    const menuSql = 'SELECT * FROM Menu WHERE Menu.'
-    const sql = 'DELETE FROM Menu WHERE Menu.id = $menuId';
-    const values = {$menuId: req.params.menuId};
-    db.run(sql, values, (error) => {
+menusRouter.delete('/:menuId', (req, res, next) => {
+    const menuItemSql = 'SELECT * FROM MenuItem WHERE MenuItem.menu_id = $menuId';
+    const menuItemValues = {$menuId: req.params.menuId};
+    db.get(menuItemSql, menuItemValues, (error, menuItem) => {
         if (error) {
             next(error);
+        } else if (menuItem) {
+            res.sendStatus(400);
         } else {
-            res.sendStatus(204);
+            const deleteSql = 'DELETE FROM Menu WHERE Menu.id = $menuId';
+            const deleteValues = {$menuId: req.params.menuId};
+            db.run(deleteSql, deleteValues, (error) => {
+                if (error) {
+                    next(error);
+                } else {
+                    res.sendStatus(204);
+                }
+            })
         }
     })
 });
