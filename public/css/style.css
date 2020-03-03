@@ -23,7 +23,7 @@ input {
 .button {
   display: inline-block;
   padding: .5rem 1rem;
-  border-radius: 67px;
+  border-radius: 50px;
   margin-right: .33rem;
   background-color: #7e5a61;
   letter-spacing: 0.3px;
